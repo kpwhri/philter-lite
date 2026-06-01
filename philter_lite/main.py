@@ -70,7 +70,7 @@ def main():
         "--freq_table",
         default=False,
         help="When freqtable is true, will output a unigram/bigram frequency table of all note words and "
-        "their PHI/non-PHI counts",
+             "their PHI/non-PHI counts",
         type=lambda x: bool(distutils.util.strtobool(x)),
     )
     ap.add_argument(
@@ -96,14 +96,14 @@ def main():
         "--prod",
         default=False,
         help="When prod is true, this will run the script with output in i2b2 xml format without running "
-        "the eval script",
+             "the eval script",
         type=lambda x: bool(distutils.util.strtobool(x)),
     )
     ap.add_argument(
         "--cachepos",
         default=None,
         help="Path to a directoy to store/load the pos data for all notes. If no path is specified then "
-        "memory caching will be used.",
+             "memory caching will be used.",
         type=str,
     )
 
@@ -146,14 +146,14 @@ def main():
 
     for root, _dirs, files in os.walk(philter_config["finpath"]):
         for file in files:
-            with open(os.path.join(root, file)) as inf:
+            with open(os.path.join(root, file), encoding='utf8', errors='replace') as inf:
                 text = inf.read()
                 include_map, exclude_map, data_tracker = philter_lite.detect_phi(text, patterns=filters)
                 if philter_config["outformat"] == "i2b2":
-                    with open(os.path.join(philter_config["foutpath"], f"{file}.txt"), "w") as fout:
+                    with open(os.path.join(philter_config["foutpath"], f"{file}.txt"), "w", encoding='utf8') as fout:
                         fout.write(philter_lite.transform_text_i2b2(data_tracker))
                 elif philter_config["outformat"] == "asterisk":
-                    with open(os.path.join(philter_config["foutpath"], f"{file}.txt"), "w") as fout:
+                    with open(os.path.join(philter_config["foutpath"], f"{file}.txt"), "w", encoding='utf8') as fout:
                         fout.write(philter_lite.transform_text_asterisk(text, include_map))
 
 
